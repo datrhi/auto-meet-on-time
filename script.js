@@ -17,6 +17,9 @@ if (xp.includes("meet.google.com")) {
  * Function to join the meeting by clicking the microphone and camera buttons
  */
 function joinMeeting() {
+    if (!isTimerActive) {
+        return;
+    }
     if (document.readyState === "complete") {
         try {
             // Click to turn off the microphone

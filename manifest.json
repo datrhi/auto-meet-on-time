@@ -1,23 +1,19 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Always Meet On Time",
     "description": "Always Meet On Time",
-    "version": "1.1",
+    "version": "1.2",
     "content_scripts": [
         {
-            "js": [
-                "script.js"
-            ],
-            "matches": [
-                "<all_urls>"
-            ]
+            "js": ["script.js"],
+            "matches": ["<all_urls>"]
         }
     ],
-    "permissions": [
-        "storage"
-    ],
-    "icons" : {"192" : "images/1.png"},
-    "browser_action": {
+    "permissions": ["storage"],
+    "icons": {
+        "192": "images/1.png"
+    },
+    "action": {
         "default_icon": "images/1.png",
         "default_popup": "index.html"
     }
