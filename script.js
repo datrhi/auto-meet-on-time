@@ -5,6 +5,12 @@ let timer = null;
 // Object to hold meeting details
 let meetingDetails = {};
 
+// Check if the current URL includes "meet.google.com"
+xp = location.href;
+if (xp.includes("meet.google.com")) {
+    // If it does, wait for 2 seconds and then join the meeting
+    setTimeout(joinMeeting, 2000);
+}
 /**
  * Function to join the meeting by clicking the microphone and camera buttons
  */
