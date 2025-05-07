@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Always Meet On Time",
     "description": "Always Meet On Time",
-    "version": "1.0",
+    "version": "1.1",
     "content_scripts": [
         {
             "js": [
