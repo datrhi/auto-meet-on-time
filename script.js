@@ -119,7 +119,7 @@ function checkMeetingTime() {
         isTimerActive = false;
         location.replace(meetingDetails.link);
     } else {
-        // Check again after 10 seconds
-        timer = setTimeout(checkMeetingTime, 10000);
+        // Check again after 30 seconds
+        timer = setTimeout(checkMeetingTime, 30000);
     }
 }
