@@ -4,6 +4,8 @@ console.log("Always Meet On Time script is working");
 let timer = null;
 // Object to hold meeting details
 let meetingDetails = {};
+// Flag to track if timer is active
+let isTimerActive = false;
 
 // Check if the current URL includes "meet.google.com"
 xp = location.href;
@@ -60,6 +62,15 @@ function getCurrentTime() {
     return `${hours}:${minutes}`;
 }
 
+// Function to handle beforeunload event
+function handleBeforeUnload(event) {
+    // Show confirmation dialog
+    event.preventDefault();
+    // Chrome requires returnValue to be set
+    event.returnValue = "You have an active meeting timer running. Are you sure you want to leave this page?";
+    return event.returnValue;
+}
+
 // Listener for messages from the background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.message === "tickbtnclicked") {
@@ -71,11 +82,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             clearTimeout(timer);
             timer = null;
         }
+        
         // Start checking for the meeting time
         checkMeetingTime();
+        
+        // Set timer active flag and add beforeunload listener
+        isTimerActive = true;
+        window.addEventListener('beforeunload', handleBeforeUnload);
     }
     if (request.message === "stopbtnclicked") {
         console.log("Stop button clicked");
+        
+        // Clear timer if it exists
+        if (timer !== null) {
+            clearTimeout(timer);
+            timer = null;
+        }
+        
+        // Set timer inactive and remove beforeunload listener
+        isTimerActive = false;
+        window.removeEventListener('beforeunload', handleBeforeUnload);
     }
 });
 
@@ -85,6 +111,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 function checkMeetingTime() {
     console.log("Checking meeting time:", meetingDetails.time, getCurrentTime(), location, meetingDetails.link);
     if (meetingDetails.time === getCurrentTime()) {
+        // Remove beforeunload listener before navigating
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+        isTimerActive = false;
         location.replace(meetingDetails.link);
     } else {
         // Check again after 10 seconds
